@@ -6,10 +6,14 @@ import mpu6050
 mpu = mpu6050.MPU6050()
 mpu.dmpInitialize()
 mpu.setDMPEnabled(True)
+
+#mpu.setI2CBypassEnabled(False)
     
+#mpu.setSlaveAddress(0,0x3d)
+#print "the Slave0\'s address is "
+#print mpu.getSlaveAddress(0)
 # get expected DMP packet size for later comparison
 packetSize = mpu.dmpGetFIFOPacketSize() 
-
 while True:
     # Get INT_STATUS byte
     mpuIntStatus = mpu.getIntStatus()
@@ -34,7 +38,7 @@ while True:
         q = mpu.dmpGetQuaternion(result)
         g = mpu.dmpGetGravity(q)
         ypr = mpu.dmpGetYawPitchRoll(q, g)
-        
+        print q['w'],q['x'],q['y'],q['z'],
         print(ypr['yaw'] * 180 / math.pi),
         print(ypr['pitch'] * 180 / math.pi),
         print(ypr['roll'] * 180 / math.pi)
