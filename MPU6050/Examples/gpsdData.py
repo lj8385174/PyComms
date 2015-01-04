@@ -35,6 +35,8 @@ if __name__ == '__main__':
 
 			os.system('clear')
 
+			print 'gpsOnline:',gpsd.online
+			#print 'gpsDevices:',gpsd.device
 			print
 			print ' GPS reading'
 			print '----------------------------------------'
