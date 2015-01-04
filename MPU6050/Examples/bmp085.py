@@ -181,7 +181,7 @@ class BMP085:
         
         return altitude
 
-    def readData(self)
+    def readData(self,seaLevelPressure = 101325):
         # Gets the compensated temperature in degrees celcius
         UT = 0
         X1 = 0

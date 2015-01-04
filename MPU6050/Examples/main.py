@@ -33,7 +33,7 @@ while True:
         if fifoCount == 1024:
             # reset so we can continue cleanly
             mpu.resetFIFO()
-            print('FIFO overflow!')
+            #print('FIFO overflow!')
             
             
         # wait for correct available data length, should be a VERY short wait
@@ -42,17 +42,20 @@ while True:
             fifoCount = mpu.getFIFOCount()
         
         result = mpu.getFIFOBytes(packetSize)
+        magData = mag.getHeading() 
+	bmpData = bmp.readData()	
+
         q = mpu.dmpGetQuaternion(result)
         g = mpu.dmpGetGravity(q)
         ypr = mpu.dmpGetYawPitchRoll(q, g)
         
         #get the magnetic intensity correspondingly
-        magData = mag.getHeading() 
         print q['w'],q['x'],q['y'],q['z'],
         print(ypr['yaw'] * 180 / math.pi),
         print(ypr['pitch'] * 180 / math.pi),
         print(ypr['roll'] * 180 / math.pi),
-        print magData['x'],magData['y'],magData['z']
+        print magData['x'],magData['y'],magData['z'],
+	print bmpData['temp'],bmpData['alt'],bmpData['pre']
     
         # track FIFO count here in case there is > 1 packet available
         # (this lets us immediately read more without waiting for an interrupt)        

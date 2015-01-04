@@ -107,7 +107,7 @@ class HMC5883L:
     # still should be coding
     def selfTest(self):
         if False:
-            if !isInitialized:
+            if ~isInitialized:
                 self.initialize()
             self.i2c.writeBit(HMC5883L_RA_CONFIG_A,0,1)
             self.i2c.writeBit(HMC5883L_RA_CONFIG_A,1,0)
