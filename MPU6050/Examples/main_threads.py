@@ -11,6 +11,7 @@ def mpu6050Thread():
     global mpuData
     mpu = mpu6050.MPU6050()
     mpu.setDMPEnabled(True)
+    mpu.resetFIFO()
     packetSize = mpu.dmpGetFIFOPacketSize()
     while True:
         # Get INT_STATUS byte
@@ -34,19 +35,10 @@ def mpu6050Thread():
             q = mpu.dmpGetQuaternion(result)
             g = mpu.dmpGetGravity(q)
             ypr = mpu.dmpGetYawPitchRoll(q, g)
-            
-            #get the magnetic intensity correspondingly
-            print q['w'],q['x'],q['y'],q['z'],
-            print(ypr['yaw'] * 180 / math.pi),
-            print(ypr['pitch'] * 180 / math.pi),
-            print(ypr['roll'] * 180 / math.pi)
-            
             mpuData={'q':q,
                     'ypr':ypr,
                     'time':float(time.time())
                     }
-
-
             # track FIFO count here in case there is > 1 packet available
             # (this lets us immediately read more without waiting for an interrupt)        
             fifoCount -= packetSize 
@@ -58,7 +50,7 @@ def hm5883lThread():
     while True:
         magData = mag.getHeading() 
         magData['time']= float(time.time())
-        time.sleep(20)
+        time.sleep(0.02)
 
 def bmpThread():
     global bmpData
@@ -68,7 +60,7 @@ def bmpThread():
     while True:
         bmpData = bmp.readData()
         bmpData['time']= float(time.time())
-        time.sleep(100)
+        time.sleep(0.1)
 
 
 def main():
@@ -77,14 +69,18 @@ def main():
     global magData
     global bmpData
     try:
-        thread.start_new_thread(mpu6050Thread)
-        thread.start_new_thread(hm5883lThread)
-        thread.start_new_thread(bmpThread)
+        thread.start_new_thread(mpu6050Thread,())
+        thread.start_new_thread(hm5883lThread,())
+        thread.start_new_thread(bmpThread,())
     except:
         print "Error with threading"
         run = False
-    time.sleep(4000)
+    time.sleep(4)
     while run:
-        print mpuData,mpuData,bmpData
+        print mpuData,
+	print magData,
+	print bmpData
+	time.sleep(0.1)
 
-
+if __name__ == '__main__':
+    main()
