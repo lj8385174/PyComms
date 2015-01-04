@@ -87,7 +87,7 @@ class PyComms:
             i += 1
             
         return output        
-        
+    # "U" of "readBytesListU" means "Signed"    
     def readBytesListU(self, reg, length):
         output = []
         

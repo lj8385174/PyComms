@@ -4,7 +4,7 @@ import hmc5883l
 
 # Sensor initialization
 mag = hmc5883l.HMC5883L()
-#mag.initialize()
+mag.initialize()
 
 while True:
     data = mag.getHeading()

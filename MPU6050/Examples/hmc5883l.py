@@ -78,6 +78,10 @@ class HMC5883L:
     
     mode = 0
 
+    gain = HMC5883L_GAIN_1090
+
+    isInitialized = False
+
     def __init__(self, address = HMC5883L_DEFAULT_ADDRESS):
         self.i2c = PyComms(address)
         self.address = address
@@ -93,10 +97,28 @@ class HMC5883L:
         self.setGain(self.HMC5883L_GAIN_1090);
     
         # write MODE register
-        self.setMode(self.HMC5883L_MODE_SINGLE);      
+        self.setMode(self.HMC5883L_MODE_SINGLE);
+        isInitialized = False
         
     def testConnection(self):
         pass
+
+    # self testing
+    # still should be coding
+    def selfTest(self):
+        if False:
+            if !isInitialized:
+                self.initialize()
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,0,1)
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,1,0)
+            M1 = self.getHeading()
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,1,1)
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,0,0)
+            M2 = self.getHeading()
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,0,0)
+            self.i2c.writeBit(HMC5883L_RA_CONFIG_A,1,0)
+        
+        
         
     def getSampleAveraging(self):
         pass
@@ -114,13 +136,14 @@ class HMC5883L:
         pass
     
     def setMeasurementBias(self, value):
-        self.i2c.writeBits(self.HMC5883L_RA_CONFIG_A, self.HMC5883L_CRA_BIAS_BIT, self.HMC5883L_CRA_BIAS_LENGTH, value);
-        
+        self.i2c.writeBits(self.HMC5883L_RA_CONFIG_A, self.HMC5883L_CRA_BIAS_BIT, self.HMC5883L_CRA_BIAS_LENGTH, value)
+    #must after initialization
     def getGain(self):
-        pass
+        return self.gain
         
     def setGain(self, value):
         self.i2c.write8(self.HMC5883L_RA_CONFIG_B, value << (self.HMC5883L_CRB_GAIN_BIT - self.HMC5883L_CRB_GAIN_LENGTH + 1))
+        self.gain = value
         
     def getMode(self):
         pass
