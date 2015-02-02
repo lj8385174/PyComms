@@ -23,7 +23,7 @@ def writeThread(file1,num):
 	global mpuDatas
 	while True:
 		lens = len(mpuDatas)
-		print ('mpuDatas lens is ',lens)
+		print ('mpuDatas len is ',lens)
 		if lens !=0:
 		     for i in range(0,lens-1):
 			data = mpuDatas.pop(0)
@@ -41,7 +41,7 @@ def writeThread(file1,num):
 	global magDatas
 	while True:
 		lens = len(magDatas)
-		print ('magDatas lens is ',lens)
+		print ('magDatas len is ',lens)
 		if lens !=0:
 		     for i in range(0,lens-1):
 			data = magDatas.pop(0)
@@ -56,7 +56,7 @@ def writeThread(file1,num):
 	global bmpDatas
 	while True:
 		lens = len(bmpDatas)
-		print ('bmpDatas lens is ',lens)
+		print ('bmpDatas len is ',lens)
 		if lens !=0:
 		     for i in range(0,lens-1):
 			data = bmpDatas.pop(0)
@@ -69,11 +69,11 @@ def writeThread(file1,num):
 		time.sleep(1)
 
 def mpu6050Thread(fileToWrite=None):
-    # Sensors initialization
-    global mpuData
+    # Sensors initialization global mpuData
     global mpuDatas
     mpuDatas = list()
-    file1  = fileOpen(fileToWrite)
+    if fileToWrite != None:
+        file1  = fileOpen(fileToWrite)
     mpu = mpu6050.MPU6050()
     mpu.setDMPEnabled(True)
     mpu.resetFIFO()
@@ -121,7 +121,6 @@ def hm5883lThread(fileToWrite=None):
         thread.start_new_thread(writeThread,(file1,2))
     # HM5883l
     mag = hmc5883l.HMC5883L()
-    mag.initialize()
     while True:
         magData = mag.getHeading() 
         magData['time']= float(time.time())
@@ -155,6 +154,13 @@ def main():
     fileMpu = "/mnt/sd/mpu.dat"
     fileMag = "/mnt/sd/mag.dat"
     fileBmp = "/mnt/sd/bmp.dat"
+    try:
+    	mpu = mpu6050.MPU6050()
+	mpu.dmpInitialize()
+    	mag = hmc5883l.HMC5883L()
+    	mag.initialize()
+    except:
+	print('Error with MPU initialization')
     try:
         thread.start_new_thread(mpu6050Thread,(fileMpu,))
         thread.start_new_thread(hm5883lThread,(fileMag,))
