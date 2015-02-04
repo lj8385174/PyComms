@@ -194,15 +194,18 @@ def gpsThread(fileToWrite=None):
     # GPs read Data
     try:
         while stop==False:
-	    if(len(gpsp.gpsd.utc)!=0):
-	        gpsData = dict()
-    	        gpsData['lat']  =  gpsp.gpsd.fix.latitude
-	        gpsData['lon'] =  gpsp.gpsd.fix.longitude
-	        gpsData['timeUtc']   =  gpsp.gpsd.utc
-                gpsData['alt']  =  gpsp.gpsd.fix.altitude
-                gpsData['time']= float(time.time())
-	        if file1 != None:
-	            gpsDatas.append(gpsData)
+            try:
+		    if(len(gpsp.gpsd.utc)!=0):
+			gpsData = dict()
+			gpsData['lat']  =  gpsp.gpsd.fix.latitude
+			gpsData['lon'] =  gpsp.gpsd.fix.longitude
+			gpsData['timeUtc']   =  gpsp.gpsd.utc
+			gpsData['alt']  =  gpsp.gpsd.fix.altitude
+			gpsData['time']= float(time.time())
+			if file1 != None:
+			    gpsDatas.append(gpsData)
+	    except:
+		    print('read utc error')
 	    if(stop==True):
 		print('stop')
             time.sleep(0.2)
