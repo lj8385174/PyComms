@@ -1034,13 +1034,28 @@ class MPU6050:
         pass
         
     def getAccelerationX(self):
-        pass
-        
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_XOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_XOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_X=accel_H[0]*256+accel_L[0]
+        return accel_X
+
     def getAccelerationY(self):
-        pass
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_YOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_YOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_Y=accel_H[0]*256+accel_L[0]
+        return accel_Y
         
     def getAccelerationZ(self):
-        pass
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_ZOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_ZOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_Z=accel_H[0]*256+accel_L[0]
+        return accel_Z
         
     def getTemperature(self):
 	#not checked
@@ -1056,13 +1071,28 @@ class MPU6050:
         pass
         
     def getRotationX(self):
-        pass
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_XOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_XOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_X=accel_H[0]*256+accel_L[0]
+        return accel_X
         
     def getRotationY(self):
-        pass
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_YOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_YOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_X=accel_H[0]*256+accel_L[0]
+        return accel_X
      
     def getRotationZ(self):
-        pass
+	accel_H=self.i2c.readBytes(self.MPU6050_RA_GYRO_ZOUT_H,1)
+	accel_L=self.i2c.readBytes(self.MPU6050_RA_GYRO_ZOUT_L,1)
+	if accel_H[0]>=128:
+		accel_H[0]-=256
+	accel_X=accel_H[0]*256+accel_L[0]
+        return accel_X
       
     def getExternalSensorByte(self, position):
         return self.i2c.readU8(self.MPU6050_RA_EXT_SENS_DATA_00 + position)
