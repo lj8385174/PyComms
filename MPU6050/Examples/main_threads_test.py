@@ -134,12 +134,18 @@ def mpu6050Thread(fileToWrite=None):
 	            r_X	= mpu.getRotationX()
 	            r_Y	= mpu.getRotationY()
 	            r_Z	= mpu.getRotationZ()
-		    print('raw data of A:\n')
-		    print(a_X,a_Y,a_Z)
-		    print('raw data of R:\n')
-		    print(r_X,r_Y,r_Z)
+		    #print('raw data of A:\n')
+		    #print(a_X,a_Y,a_Z)
+		    #print('raw data of R:\n')
+		    #print(r_X,r_Y,r_Z)
 		    mpuData={'q':q,
 			   'ypr':ypr,
+			   'a_X':a_X,
+			   'a_Y':a_Y,
+			   'a_Z':a_Z,
+			   'r_X':r_X,
+			   'r_Y':r_Y,
+			   'r_Z':r_Z,
 			  'time':float(time.time())
 				}
 		    if file1 != None:
