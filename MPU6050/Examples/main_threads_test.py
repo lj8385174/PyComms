@@ -38,6 +38,12 @@ def writeThread(file1,num):
 				      data['ypr']['yaw'] * 180 / math.pi,
 				      data['ypr']['pitch'] * 180 / math.pi,
 				      data['ypr']['roll'] * 180 / math.pi,
+				      data['a_X'],
+				      data['a_Y'],
+				      data['a_Z'],
+				      data['r_X'],
+				      data['r_Y'],
+				      data['r_Z'],
 				      data['time'],
 				      file = file1)
 			time.sleep(1)
