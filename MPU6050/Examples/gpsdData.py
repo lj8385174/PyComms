@@ -8,24 +8,19 @@ from time import *
 import time
 import threading
 
-gpsd = None #seting the global variable
-
-os.system('clear') #clear the terminal (optional)
-
 class GpsPoller(threading.Thread):
 	def __init__(self):
 		threading.Thread.__init__(self)
-		global gpsd #bring it in scope
-		gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
+		self.gpsd = gps(mode=WATCH_ENABLE) #starting the stream of info
 		self.current_value = None
 		self.running = True #setting the thread running to true
 
 	def run(self):
-		global gpsd
-		while gpsp.running:
-			gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
+		while self.running:
+			self.gpsd.next() #this will continue to loop and grab EACH set of gpsd info to clear the buffer
 
 if __name__ == '__main__':
+	os.system('clear') #clear the terminal (optional)
 	gpsp = GpsPoller() # create the thread
 	try:
 		gpsp.start() # start it up
@@ -34,26 +29,26 @@ if __name__ == '__main__':
 			#print gpsd.fix.latitude,', ',gpsd.fix.longitude,'	Time: ',gpsd.utc
 
 			os.system('clear')
-
-			print 'gpsOnline:',gpsd.online
-			#print 'gpsDevices:',gpsd.device
+			
+			print 'len of time:' , len(gpsp.gpsd.utc)
 			print
 			print ' GPS reading'
 			print '----------------------------------------'
-			print 'latitude    ' , gpsd.fix.latitude
-			print 'longitude   ' , gpsd.fix.longitude
-			print 'time utc    ' , gpsd.utc,' + ', gpsd.fix.time
-			print 'altitude (m)' , gpsd.fix.altitude
-			print 'eps         ' , gpsd.fix.eps
-			print 'epx         ' , gpsd.fix.epx
-			print 'epv         ' , gpsd.fix.epv
-			print 'ept         ' , gpsd.fix.ept
-			print 'speed (m/s) ' , gpsd.fix.speed
-			print 'climb       ' , gpsd.fix.climb
-			print 'track       ' , gpsd.fix.track
-			print 'mode        ' , gpsd.fix.mode
+			print 'latitude    ' , gpsp.gpsd.fix.latitude
+			print 'longitude   ' , gpsp.gpsd.fix.longitude
+			print 'time utc    ' , gpsp.gpsd.utc,' + ', gpsp.gpsd.fix.time
+			print 'time utc+8    ' , gpsp.gpsd.utc
+			print 'altitude (m)' , gpsp.gpsd.fix.altitude
+			print 'eps         ' , gpsp.gpsd.fix.eps
+			print 'epx         ' , gpsp.gpsd.fix.epx
+			print 'epv         ' , gpsp.gpsd.fix.epv
+			print 'ept         ' , gpsp.gpsd.fix.ept
+			print 'speed (m/s) ' , gpsp.gpsd.fix.speed
+			print 'climb       ' , gpsp.gpsd.fix.climb
+			print 'track       ' , gpsp.gpsd.fix.track
+			print 'mode        ' , gpsp.gpsd.fix.mode
 			print
-			print 'sats        ' , gpsd.satellites
+			print 'sats        ' , gpsp.gpsd.satellites
 
 			time.sleep(0.1) #set to whatever
 
